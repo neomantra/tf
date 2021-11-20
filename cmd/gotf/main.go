@@ -17,6 +17,9 @@ GOlang Time Formatter
 
 Reads stdin, converts epoch times to human readable, outputs to stdout.
 
+10-digits are interpreted as seconds, 13 as milliseconds,
+16 as microseconds, and 19 as nanoseconds.
+
 example:
   cat log.txt | gotf -g | head
 

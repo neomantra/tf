@@ -16,9 +16,24 @@ func TestEpochToTime(t *testing.T) {
 		want    time.Time
 		wantErr bool
 	}{{
-		name:    "Test convert 1637356129",
+		name:    "Test convert seconds",
 		args:    args{"1637356129"},
 		want:    time.Unix(1637356129, 0),
+		wantErr: false,
+	}, {
+		name:    "Test convert milliseconds",
+		args:    args{"1637356129123"},
+		want:    time.Unix(1637356129, 123*1000000),
+		wantErr: false,
+	}, {
+		name:    "Test convert microseconds",
+		args:    args{"1637356129123456"},
+		want:    time.Unix(1637356129, 123456*1000),
+		wantErr: false,
+	}, {
+		name:    "Test convert nanoseconds",
+		args:    args{"1637356129123456789"},
+		want:    time.Unix(1637356129, 123456789),
 		wantErr: false,
 	}}
 	for _, tt := range tests {
