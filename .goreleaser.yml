@@ -47,3 +47,18 @@ release:
   github:
     owner: neomantra
     name: gotf
+
+brews:
+  - homepage: https://github.com/neomantra/gotf
+    description: "Golang-based Time Formatter"
+    folder: Formula
+    tap:
+      owner: neomantra
+      name: homebrew-tap
+      branch: main
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    commit_author:
+      name: goreleaserbot
+      email: goreleaserbot@neomantra.net
+    install: |
+      bin.install "gotf"
