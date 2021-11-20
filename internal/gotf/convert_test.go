@@ -35,6 +35,16 @@ func TestEpochToTime(t *testing.T) {
 		args:    args{"1637356129123456789"},
 		want:    time.Unix(1637356129, 123456789),
 		wantErr: false,
+	}, {
+		name:    "Non-time number length 11 should return empty",
+		args:    args{"16373561292"},
+		want:    time.Time{},
+		wantErr: false,
+	}, {
+		name:    "Not a number should throw error",
+		args:    args{"sdads16373561292"},
+		want:    time.Time{},
+		wantErr: true,
 	}}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -76,6 +86,10 @@ func TestConvertTimes(t *testing.T) {
 		name: "Global match on",
 		args: args{"1637356129 1637356130", time.RFC3339, true},
 		want: "2021-11-19T16:08:49-05:00 2021-11-19T16:08:50-05:00",
+	}, {
+		name: "Pass through weird numbers",
+		args: args{"1637356129 16373561301", time.RFC3339, true},
+		want: "2021-11-19T16:08:49-05:00 16373561301",
 	}}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

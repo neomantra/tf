@@ -1,6 +1,7 @@
 package gotf
 
 import (
+	"fmt"
 	"regexp"
 	"strconv"
 	"time"
@@ -10,18 +11,23 @@ import (
 // 13-digits epoch+3 milliseconds
 // 16-digits epoch+6 microseconds
 // 19-digits epoch+9 nanoseconds
-var timevalRegex = regexp.MustCompile(`([0-9]{19}|[0-9]{16}[0-9]{13}|[0-9]{10})`)
+// But regex only works in inclusive bounds
+var timevalRegex = regexp.MustCompile(`([0-9]{10,19})`)
 
 // Converts an "epoch" string to a Time.
 // 10-digits are interpreted as seconds, 13 as milliseconds,
 // 16 as microseconds, and 19 as nanoseconds
-// Returns (time.Time{}, error) on error.
+// Return time.Time{} if it is numeric, but not a time string.
+// Returns a non-nil error on error.
 func EpochToTime(str string) (time.Time, error) {
 	num, err := strconv.ParseInt(str, 10, 64)
 	if err != nil {
 		return time.Time{}, err
 	}
 	switch len(str) {
+	case 10:
+		sec := num
+		return time.Unix(sec, 0), nil
 	case 13:
 		sec, msec := num/1000, num%1000
 		return time.Unix(sec, msec*1000000), nil
@@ -32,7 +38,21 @@ func EpochToTime(str string) (time.Time, error) {
 		sec, nsec := num/1000000000, num%1000000000
 		return time.Unix(sec, nsec), nil
 	default:
-		return time.Unix(num, 0), nil
+		return time.Time{}, nil
+	}
+}
+
+func outputFormatTime(tv time.Time, outFormat string, partLen int) string {
+	tvstr := tv.Format(outFormat)
+	switch partLen {
+	case 13:
+		return fmt.Sprintf("%s.%03d", tvstr, tv.Nanosecond()/1000000)
+	case 16:
+		return fmt.Sprintf("%s.%06d", tvstr, tv.Nanosecond()/1000)
+	case 19:
+		return fmt.Sprintf("%s.%09d", tvstr, tv.Nanosecond())
+	default:
+		return tvstr
 	}
 }
 
@@ -44,11 +64,11 @@ func ConvertTimes(str string, outFormat string, globalMatch bool) (string, bool)
 		if !globalMatch && everConverted {
 			return part
 		}
-		if tv, err := EpochToTime(part); err != nil {
+		if tv, err := EpochToTime(part); err != nil || tv.IsZero() {
 			return part
 		} else {
 			everConverted = true
-			return tv.Format(outFormat)
+			return outputFormatTime(tv, outFormat, len(part))
 		}
 	})
 	return res, everConverted
