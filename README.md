@@ -4,6 +4,22 @@
 and outputs them to stdout.
 
 ```
+$ cat log.txt
+[1524241219] Time is on my side
+[1555777220] Yes it is
+[1587399621] A time in ecpoch millis: 1637419929123
+[1618935621] A time in ecpoch nanos: 1637419929123456789
+
+$ gotf -g log.txt
+[12:20:19] Time is on my side
+[12:20:20] Yes it is
+[12:20:21] A time in ecpoch millis: 09:52:09.123
+[12:20:21] A time in ecpoch nanos: 09:52:09.123456789
+```
+
+## Usage
+
+```
 $ gotf --help
 usage:  ./gotf <options> [file1 [file2 [...]]]
 
@@ -84,14 +100,13 @@ $ gotf -gd log.txt
 
 ## Building
 
-This [simple script](./build.sh) will run unit tests and build the `gotf` binary for your plaftorm.
+Building is performed with [task](https://taskfile.dev/#/):
 
 ```
-$ ./build.sh 
-+ set -e
-+ go test neomantra/gotf/internal/gotf
-ok      neomantra/gotf/internal/gotf    (cached)
-+ go build -o gotf cmd/gotf/main.go./build.sh
+$ task
+task: [test] go test neomantra/gotf/internal/gotf
+ok      neomantra/gotf/internal/gotf
+task: [build] go build -o gotf cmd/gotf/main.go
 ```
 
 ----

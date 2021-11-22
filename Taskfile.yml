@@ -1,0 +1,28 @@
+version: '3'
+
+tasks:
+  build:
+    cmds:
+      - go build -o gotf cmd/gotf/main.go
+    sources:
+      - ./**/*.go
+    generates:
+      - gotf
+    silent: false
+
+  clean:
+    cmds:
+      - rm gotf
+
+  test:
+    cmds:
+      - go test neomantra/gotf/internal/gotf
+    silent: false
+
+  default:
+    cmds:
+      - task: test
+      - task: build
+
+
+
