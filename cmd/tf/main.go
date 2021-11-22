@@ -14,19 +14,19 @@ import (
 
 var usageFormat string = `usage:  %s <options> [file1 [file2 [...]]]
 
-GOlang Time Formatter
+Time Formatter
 
-Reads text files, converting epoch times to human readable, outputting to stdout.
+Scans for epoch times in input and outputs them
+as human readable strings to stdout.
 
 10-digits are interpreted as seconds, 13 as milliseconds,
 16 as microseconds, and 19 as nanoseconds.
 
 If no filenames or only '-' is passed, stdin is processed.
 
-example:
-echo 1637421447 | tf
-
-tf -g log.txt | head
+examples:
+$ echo 1637421447 | tf
+$ tf -g log.txt | head
 
 `
 
