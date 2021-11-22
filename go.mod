@@ -1,4 +1,4 @@
-module neomantra/gotf
+module neomantra/tf
 
 go 1.17
 

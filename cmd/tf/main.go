@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"neomantra/gotf/internal/gotf"
+	"neomantra/tf/internal/tf"
 	"os"
 
 	"github.com/spf13/pflag"
@@ -24,9 +24,9 @@ Reads text files, converting epoch times to human readable, outputting to stdout
 If no filenames or only '-' is passed, stdin is processed.
 
 example:
-echo 1637421447 | gotf
+echo 1637421447 | tf
 
-gotf -g log.txt | head
+tf -g log.txt | head
 
 `
 
@@ -56,7 +56,7 @@ func processReader(reader io.Reader) error {
 				}
 			}
 
-			str, _ := gotf.ConvertTimes(string(buf), g_outputFormat, g_globalMatch)
+			str, _ := tf.ConvertTimes(string(buf), g_outputFormat, g_globalMatch)
 			fmt.Println(str)
 		}
 	} else {
@@ -64,7 +64,7 @@ func processReader(reader io.Reader) error {
 		scanner := bufio.NewScanner(reader)
 		for scanner.Scan() {
 			// convert time
-			str, _ := gotf.ConvertTimes(scanner.Text(), g_outputFormat, g_globalMatch)
+			str, _ := tf.ConvertTimes(scanner.Text(), g_outputFormat, g_globalMatch)
 			fmt.Println(str)
 		}
 

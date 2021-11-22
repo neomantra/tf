@@ -2,16 +2,16 @@
 # Copyright (c) 2021 Neomantra Corp
 # Documentation at http://goreleaser.com
 
-project_name: gotf
+project_name: tf
 
 before:
   hooks:
     - go mod tidy
 
 builds:
-  - main: cmd/gotf/main.go
-    id: gotf
-    binary: gotf
+  - main: cmd/tf/main.go
+    id: tf
+    binary: tf
     env:
       - CGO_ENABLED=0
     goos:
@@ -46,10 +46,10 @@ universal_binaries:
 release:
   github:
     owner: neomantra
-    name: gotf
+    name: tf
 
 brews:
-  - homepage: https://github.com/neomantra/gotf
+  - homepage: https://github.com/neomantra/tf
     description: "Golang-based Time Formatter"
     folder: Formula
     tap:
@@ -61,4 +61,4 @@ brews:
       name: goreleaserbot
       email: goreleaserbot@neomantra.net
     install: |
-      bin.install "gotf"
+      bin.install "tf"

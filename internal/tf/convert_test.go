@@ -1,4 +1,4 @@
-package gotf
+package tf
 
 import (
 	"reflect"

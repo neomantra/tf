@@ -3,20 +3,20 @@ version: '3'
 tasks:
   build:
     cmds:
-      - go build -o gotf cmd/gotf/main.go
+      - go build -o tf cmd/tf/main.go
     sources:
       - ./**/*.go
     generates:
-      - gotf
+      - tf
     silent: false
 
   clean:
     cmds:
-      - rm gotf
+      - rm tf
 
   test:
     cmds:
-      - go test neomantra/gotf/internal/gotf
+      - go test neomantra/tf/internal/tf
     silent: false
 
   default:

@@ -5,11 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "gotf",
+            "name": "tf",
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${workspaceFolder}/cmd/gotf",
+            "program": "${workspaceFolder}/cmd/tf",
             "args": ["-g", "${workspaceFolder}/log.txt"], 
         }
     ]
