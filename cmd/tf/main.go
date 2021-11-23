@@ -28,13 +28,23 @@ examples:
 $ echo 1637421447 | tf
 $ tf -g log.txt | head
 
+The time formatting uses Golang Time.Format layouts:
+  https://pkg.go.dev/time#Time.Format
+
+options:
 `
 
 ////////////////////////////////////////////////////////////////////////////////////
 // Globals
 
+const DEFAULT_FORMAT = "15:04:05"
+const DEFAULT_FORMAT_WITH_DATE = "2006-01-02 15:04:05"
+
+const DEFAULT_BLOCK_BUFFER_SIZE = 4096
+
 var g_outputFormat string = ""
 var g_blockBuffering bool = false
+var g_blockBufferSize uint32 = DEFAULT_BLOCK_BUFFER_SIZE
 var g_globalMatch bool = false
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +53,7 @@ func processReader(reader io.Reader) error {
 	if g_blockBuffering {
 		// block buffering with bufio Reader
 		reader := bufio.NewReader(reader)
-		buf := make([]byte, BLOCK_BUFFER_SIZE)
+		buf := make([]byte, g_blockBufferSize)
 		for {
 			n, err := reader.Read(buf)
 			buf = buf[:n]
@@ -63,7 +73,6 @@ func processReader(reader io.Reader) error {
 		// line buffering with bufio.Scanner
 		scanner := bufio.NewScanner(reader)
 		for scanner.Scan() {
-			// convert time
 			str, _ := tf.ConvertTimes(scanner.Text(), g_outputFormat, g_globalMatch)
 			fmt.Println(str)
 		}
@@ -78,19 +87,15 @@ func processReader(reader io.Reader) error {
 /////////////////////////////////////////////////////////////////////////////////////
 // Main Program
 
-const DEFAULT_FORMAT = "15:04:05"
-const DEFAULT_FORMAT_WITH_DATE = "2006-01-02 15:04:05"
-
-const BLOCK_BUFFER_SIZE = 4096
-
 func main() {
 	var useDate bool
 	var showHelp bool
 
-	pflag.StringVarP(&g_outputFormat, "format", "f", "", "golang Time.Format string (default: '15:04:05')")
+	pflag.StringVarP(&g_outputFormat, "format", "f", "", fmt.Sprintf("golang Time.Format string (default: '%s')", DEFAULT_FORMAT))
 	pflag.BoolVarP(&g_globalMatch, "global", "g", false, "global match")
 	pflag.BoolVarP(&g_blockBuffering, "block", "b", false, "use block buffering (default: line buffering)")
-	pflag.BoolVarP(&useDate, "date", "d", false, "default format with '2006-01-02 15:04:05'")
+	pflag.Uint32VarP(&g_blockBufferSize, "block-size", "z", DEFAULT_BLOCK_BUFFER_SIZE, "block buffer size")
+	pflag.BoolVarP(&useDate, "date", "d", false, fmt.Sprintf("default format with date: '%s'", DEFAULT_FORMAT_WITH_DATE))
 	pflag.BoolVarP(&showHelp, "help", "h", false, "show help")
 	pflag.Parse()
 

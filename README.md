@@ -37,11 +37,16 @@ examples:
 $ echo 1637421447 | tf
 $ tf -g log.txt | head
 
-  -b, --block           use block buffering (default: line buffering)
-  -d, --date            default format with '2006-01-02 15:04:05'
-  -f, --format string   golang Time.Format string (default: '15:04:05')
-  -g, --global          global match
-  -h, --help            show help```
+The time formatting uses Golang Time.Format layouts:
+  https://pkg.go.dev/time#Time.Format
+
+options:
+  -b, --block               use block buffering (default: line buffering)
+  -z, --block-size uint32   block buffer size (default 4096)
+  -d, --date                default format with date: '2006-01-02 15:04:05'
+  -f, --format string       golang Time.Format string (default: '15:04:05')
+  -g, --global              global match
+  -h, --help                show help
 ```
 
 ----
