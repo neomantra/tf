@@ -33,6 +33,9 @@ as human readable strings to stdout.
 
 If no filenames or only '-' is passed, stdin is processed.
 
+Only the first match in each line/block is transformed,
+unless the --global -g option is set.
+
 examples:
 $ echo 1637421447 | tf
 $ tf -g log.txt | head
@@ -117,6 +120,8 @@ task: [build] go build -o tf cmd/tf/main.go
 ----
 
 ## Credits and License
+
+`tf` is a Golang remake of a very handy C++/yacc tool by [@wesc](https://github.com/wesc).
 
 Copyright (c) 2021 Neomantra BV
 
