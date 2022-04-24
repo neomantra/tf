@@ -14,9 +14,9 @@ import (
 
 var usageFormat string = `usage:  %s <options> [file1 [file2 [...]]]
 
-Time Formatter
+UNIX Time Formatter (tf)
 
-Scans for epoch times in input and outputs them
+Scans for UNIX epoch times in input and outputs them
 as human readable strings to stdout.
 
 10-digits are interpreted as seconds, 13 as milliseconds,
@@ -25,8 +25,8 @@ as human readable strings to stdout.
 If no filenames or only '-' is passed, stdin is processed.
 
 examples:
-$ echo 1637421447 | tf
-$ tf -g log.txt | head
+  $ echo 1637421447 | tf
+  $ tf -g log.txt | head
 
 The time formatting uses Golang Time.Format layouts:
   https://pkg.go.dev/time#Time.Format
@@ -91,11 +91,11 @@ func main() {
 	var useDate bool
 	var showHelp bool
 
-	pflag.StringVarP(&g_outputFormat, "format", "f", "", fmt.Sprintf("golang Time.Format string (default: '%s')", DEFAULT_FORMAT))
-	pflag.BoolVarP(&g_globalMatch, "global", "g", false, "global match")
+	pflag.StringVarP(&g_outputFormat, "format", "f", "", fmt.Sprintf("output with Golang Time.Format layout (default: '%s')", DEFAULT_FORMAT))
+	pflag.BoolVarP(&g_globalMatch, "global", "g", false, "global match (default: convert only first match in line)")
 	pflag.BoolVarP(&g_blockBuffering, "block", "b", false, "use block buffering (default: line buffering)")
 	pflag.Uint32VarP(&g_blockBufferSize, "block-size", "z", DEFAULT_BLOCK_BUFFER_SIZE, "block buffer size")
-	pflag.BoolVarP(&useDate, "date", "d", false, fmt.Sprintf("default format with date: '%s'", DEFAULT_FORMAT_WITH_DATE))
+	pflag.BoolVarP(&useDate, "date", "d", false, fmt.Sprintf("output with date, same as --format '%s'", DEFAULT_FORMAT_WITH_DATE))
 	pflag.BoolVarP(&showHelp, "help", "h", false, "show help")
 	pflag.Parse()
 

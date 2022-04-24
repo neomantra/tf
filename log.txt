@@ -1,4 +1,4 @@
 [1524241219] Time is on my side
 [1555777220] Yes it is
-[1587399621] A time in ecpoch millis: 1637419929123
-[1618935621] A time in ecpoch nanos: 1637419929123456789
+[1587399621] A time in epoch millis: 1637419929123
+[1618935621] A time in epoch nanos: 1637419929123456789
